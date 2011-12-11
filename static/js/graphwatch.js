@@ -10,11 +10,12 @@ function start_graph() {
     sock.addEvent('message', function(data) {
             if(data.newNode) {
                 render.addNode(data.newNode);
-                render.redraw();
             } else if (data.newEdge) {
                 render.addEdge(data.newEdge.from, data.newEdge.to);
-                render.redraw();
+            } else if(data.delNode) {
+                render.delNode(data.delNode);
             }
+            render.redraw();
         });
 }
     

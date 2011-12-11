@@ -6,7 +6,7 @@ import tornado.web
 import tornadio
 import tornadio.router
 import tornadio.server
-import simplejson
+import simplejson as json
 import tornado.ioloop
 ioloop = tornado.ioloop.IOLoop.instance()
 
@@ -29,7 +29,7 @@ class Server:
         client.send(packet)
 
     def broadcast(self, packet):
-        print 'broadcast: ' + simplejson.dumps(packet)
+        print 'broadcast: ' + json.dumps(packet)
         for c in self.clients:
             c.send(packet)
 
@@ -74,9 +74,29 @@ application = tornado.web.Application(
     socket_io_port = 11001
 )
 
+import zmq
+
+context = zmq.Context()
+socket = context.socket(zmq.SUB)
+socket.connect("tcp://localhost:11100")
+socket.setsockopt(zmq.SUBSCRIBE, "")
+poller = zmq.Poller()
+poller.register(socket, zmq.POLLIN)
+
 def idle():
+    socks = dict(poller.poll(0))
+    if socket in socks and socks[socket] == zmq.POLLIN:
+        jmsg = socket.recv()
+        print 'received '+jmsg
+        msg = json.loads(jmsg)
+        server.broadcast(msg)
+
+# Use this instead of idle() to send some fake nodes out
+def test_idle():
     print 'idle'
     global next_node
+    msg = socket.recv()
+    
     msg = {'newNode': {'name': 'node' + str(next_node) }}
     server.broadcast(msg)
     msg = {'newEdge': {'from': 'node' + str(next_node - 1), 
@@ -88,7 +108,7 @@ if __name__ == "__main__":
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
     io_loop = tornado.ioloop.IOLoop.instance()
-    tornado.ioloop.PeriodicCallback(idle, 1000).start()
+    tornado.ioloop.PeriodicCallback(idle, 100).start()
 
     tornadio.server.SocketServer(application, io_loop=io_loop)
 

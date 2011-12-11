@@ -144,6 +144,10 @@ function GraphWatchRender() {
         this.system.addEdge(from, to);
     }
 
+    this.delNode = function(data) {
+        this.system.pruneNode(data.name);
+    }
+
     this.redraw = function() {
     };
     this.hide = function(id) {
