@@ -54,14 +54,22 @@ var redraw, renderer;
         })
 
         particleSystem.eachNode(function(node, pt){
-          // node: {mass:#, p:{x,y}, name:"", data:{}}
-          // pt:   {x:#, y:#}  node position in screen coords
+                // node: {mass:#, p:{x,y}, name:"", data:{}}
+                // pt:   {x:#, y:#}  node position in screen coords
 
-          // draw a rectangle centered at pt
-          var w = 10
-          ctx.fillStyle = (node.data.alone) ? "orange" : "black"
-          ctx.fillRect(pt.x-w/2, pt.y-w/2, w,w)
-        })    			
+                // draw a rectangle centered at pt
+                var w = 100;
+                var h = 30;
+                ctx.strokeStyle = "green";
+                ctx.strokeRect(pt.x-w/2, pt.y-h/2, w,h);
+                var label = node.data.label
+                if(label) {
+                    ctx.font = "bold 11px Arial";
+                    ctx.textAlign = "center";
+                    ctx.fillStyle = "#000000";
+                    ctx.fillText(label, pt.x, pt.y);
+                }
+            });    			
       },
       
       initMouseHandling:function(){
@@ -128,6 +136,7 @@ function GraphWatchRender() {
     this.system.parameters({gravity:true});
     this.system.renderer = ArborRenderer('#canvas');
     this.addNode = function(data) {
+        data.label = data.name;
         this.system.addNode(data.name, data);
     };
         
@@ -141,11 +150,6 @@ function GraphWatchRender() {
     };
     this.show = function(id) {
     };
-
-    this.addNode({name: "foo"});
-    this.addNode({name: "bar"});
-    
-    this.addEdge("foo", "bar");
 
     this.redraw();
 }
