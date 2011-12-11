@@ -78,14 +78,17 @@ def idle():
     print 'idle'
     global next_node
     msg = {'newNode': {'name': 'node' + str(next_node) }}
-    next_node += 1
     server.broadcast(msg)
+    msg = {'newEdge': {'from': 'node' + str(next_node - 1), 
+                       'to': 'node' + str(next_node)}}
+    server.broadcast(msg)
+    next_node += 1
 
 if __name__ == "__main__":
     import logging
     logging.getLogger().setLevel(logging.DEBUG)
     io_loop = tornado.ioloop.IOLoop.instance()
-    tornado.ioloop.PeriodicCallback(idle, 10000).start()
+    tornado.ioloop.PeriodicCallback(idle, 1000).start()
 
     tornadio.server.SocketServer(application, io_loop=io_loop)
 

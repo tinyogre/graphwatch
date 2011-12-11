@@ -4,11 +4,15 @@
   <script src="/static/js/jquery-1.7.1.min.js"></script>
   <script src="http://cdn.socket.io/stable/socket.io.js"></script>
   <script>WEB_SOCKET_SWF_LOCATION = 'http://cdn.socket.io/stable/WebSocketMain.swf';</script>
-  <script type="text/javascript" src="/static/js/raphael-min.js"></script>
-  <script type="text/javascript" src="/static/js/dracula_graffle.js"></script>
-  <script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
-  <script type="text/javascript" src="/static/js/dracula_graph.js"></script>
-  <script src="/static/js/graphrender.js"></script>
+  <!--
+     <script type="text/javascript" src="/static/js/raphael-min.js"></script>
+     <script type="text/javascript" src="/static/js/dracula_graffle.js"></script>
+     <script type="text/javascript" src="/static/js/jquery-1.4.2.min.js"></script>
+     <script type="text/javascript" src="/static/js/dracula_graph.js"></script>
+     <script src="/static/js/graphrender-dracula.js"></script>
+     -->
+  <script src="/static/js/arbor.js"></script>
+  <script src="/static/js/graphrender-arbor.js"></script>
   <script src="/static/js/graphwatch.js"></script>
   <script>
     window.onload = function() {
@@ -17,7 +21,6 @@
   </script>
 </head>
 <body>
-<div id="canvas"></div>
-<button id="redraw" onclick="redraw();">redraw</button>
+<canvas id="canvas" width=320 height=240></canvas>
 </body>
 </html>

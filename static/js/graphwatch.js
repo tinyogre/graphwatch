@@ -1,7 +1,7 @@
 var render;
 
 function start_graph() {
-    render = new graphrender();
+    render = new GraphWatchRender();
     var sock = new io.Socket(window.location.hostname, {port: 11001, rememberTransport: false});
     sock.connect();
     sock.addEvent('connect', function() {
@@ -10,6 +10,10 @@ function start_graph() {
     sock.addEvent('message', function(data) {
             if(data.newNode) {
                 render.addNode(data.newNode);
+                render.redraw();
+            } else if (data.newEdge) {
+                render.addEdge(data.newEdge.from, data.newEdge.to);
+                render.redraw();
             }
         });
 }

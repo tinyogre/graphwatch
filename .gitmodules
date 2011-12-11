@@ -1,3 +1,6 @@
 [submodule "dracula"]
 	path = dracula
 	url = git@github.com:tinyogre/dracula.git
+[submodule "arbor"]
+	path = arbor
+	url = https://github.com/samizdatco/arbor.git
